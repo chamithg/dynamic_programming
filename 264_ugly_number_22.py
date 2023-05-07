@@ -1,36 +1,24 @@
 class Solution:
     def nthUglyNumber(self, n: int) -> int:
-        output = 1
-        found = set()
-        found.add(1)
-        i = 0
-        def isUgly(num):
-            if num < 1:
-                return False
-            if num in found or num == 2 or num == 3 or num == 5 :
-                return True
-            fiveFact = isUgly(num/5)
-            threeFact = isUgly(num/3)
-            twoFact = isUgly(num/2)
-            if fiveFact or threeFact or twoFact:
-                return True
-            return False
-        
-        while i < n-1:
-            
-            output +=1
-            if isUgly(output):
-                found.add(output)
-                if output/5 in found:
-                    found.remove(output/5 )
-                if output/3 in found:
-                    found.remove(output/3 )
-                if output/2 in found:
-                    found.remove(output/2 )
-                i+=1
-        
-        print(found)
-        return output
+        nums = [1]
+        i2 = 0
+        i3 = 0
+        i5 = 0
+
+        while len(nums) < n:
+            next2 = nums[i2] * 2
+            next3 = nums[i3] * 3
+            next5 = nums[i5] * 5
+            next = min(next2, next3, next5)
+            if next == next2:
+                i2 += 1
+            if next == next3:
+                i3 += 1
+            if next == next5:
+                i5 += 1
+            nums.append(next)
+
+        return nums[-1]
 
 obj = Solution()
 print(obj.nthUglyNumber(300))
